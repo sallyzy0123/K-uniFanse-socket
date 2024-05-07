@@ -6,7 +6,7 @@ import {createServer} from 'http';
 import {Server} from 'socket.io';
 
 import * as middlewares from './middlewares';
-// import api from './api';
+import api from './api';
 import MessageResponse from './interfaces/MessageResponse';
 import {ClientToServerEvents, ServerToClientEvents} from './interfaces/Socket';
 
@@ -26,6 +26,8 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/v1", api);
+
 io.on('connection', (socket) => {
   console.log(`user ${socket.id} connected`);
   
@@ -42,9 +44,6 @@ io.on('connection', (socket) => {
     } else if (msg === 'deleteMerchandise') {
       socket.broadcast.emit('deleteMerchandise', 'Merchandise deleted from socket');
     }
-    // else if (msg === 'species') {
-    //   socket.broadcast.emit('addSpecies', 'New species added');
-    // }
   });
 });
 
